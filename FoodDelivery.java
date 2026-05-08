@@ -89,3 +89,19 @@ public class FoodDelivery{
     }
 }
 
+/*
+Issues Faced During Implementation:
+
+1. Confusion between 'this' and 'super':
+Initially, I was assigning values using this.itemName = itemName,
+but later understood that since VegItem and NonVegItem inherit FoodItem,
+I should call the parent class constructor using super(itemName, price, quantity)
+to initialize common fields.
+
+2. Downcasting confusion:
+I faced difficulty calling ApplyDiscount() using FoodItem reference because
+FoodItem does not contain ApplyDiscount() method.
+I learned that VegItem and NonVegItem implement IDiscountable interface,
+so I used downcasting:
+((IDiscountable)item1).ApplyDiscount()
+to access discount methods.
