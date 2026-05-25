@@ -1,0 +1,260 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Scanner;
+
+class Vehicle {
+
+    int vehicleId;
+    String ownerName;
+    String vehicleType;
+    String vehicleNumber;
+    String location;
+    double speed;
+
+    boolean signalJumped;
+    boolean helmetViolation;
+    boolean seatBeltViolation;
+
+    String timestamp;
+
+    Vehicle(int vehicleId,
+            String ownerName,
+            String vehicleType,
+            String vehicleNumber,
+            String location,
+            double speed,
+            boolean signalJumped,
+            boolean helmetViolation,
+            boolean seatBeltViolation,
+            String timestamp) {
+
+        this.vehicleId = vehicleId;
+        this.ownerName = ownerName;
+        this.vehicleType = vehicleType;
+        this.vehicleNumber = vehicleNumber;
+        this.location = location;
+        this.speed = speed;
+
+        this.signalJumped = signalJumped;
+        this.helmetViolation = helmetViolation;
+        this.seatBeltViolation = seatBeltViolation;
+
+        this.timestamp = timestamp;
+    }
+
+    // Count Violations
+    int getViolationCount() {
+
+        int count = 0;
+
+        if (speed > 80)
+            count++;
+
+        if (signalJumped)
+            count++;
+
+        if (helmetViolation)
+            count++;
+
+        if (seatBeltViolation)
+            count++;
+
+        return count;
+    }
+}
+
+public class Main {
+
+    // Display All Vehicles
+    static void displayVehicles(
+            ArrayList<Vehicle> vehicles) {
+
+        System.out.println("\nALL VEHICLE RECORDS");
+
+        for (Vehicle v : vehicles) {
+
+            System.out.println(
+                    "ID: " + v.vehicleId +
+                    " Name: " + v.ownerName +
+                    " Type: " + v.vehicleType +
+                    " Number: " + v.vehicleNumber +
+                    " Location: " + v.location +
+                    " Speed: " + v.speed +
+                    " Violations: "
+                    + v.getViolationCount());
+        }
+    }
+
+    // Detect Violations
+    static void detectViolations(
+            ArrayList<Vehicle> vehicles) {
+
+        System.out.println("\nVIOLATION REPORT");
+
+        for (Vehicle v : vehicles) {
+
+            if (v.getViolationCount() > 0) {
+
+                System.out.println(
+                        v.vehicleNumber +
+                        " has " +
+                        v.getViolationCount()
+                        + " violations");
+            }
+        }
+    }
+
+    // Search Vehicle
+    static void searchVehicle(
+            ArrayList<Vehicle> vehicles,
+            String number) {
+
+        boolean found = false;
+
+        for (Vehicle v : vehicles) {
+
+            if (v.vehicleNumber
+                    .equalsIgnoreCase(number)) {
+
+                System.out.println(
+                        "\nVEHICLE FOUND");
+
+                System.out.println(
+                        "Owner: "
+                        + v.ownerName);
+
+                System.out.println(
+                        "Speed: "
+                        + v.speed);
+
+                found = true;
+
+                break;
+            }
+        }
+
+        if (!found) {
+
+            System.out.println(
+                    "\nVehicle not found");
+        }
+    }
+
+    // Sort By Speed
+    static void sortBySpeed(
+            ArrayList<Vehicle> vehicles) {
+
+        Collections.sort(vehicles,
+                new Comparator<Vehicle>() {
+
+            @Override
+            public int compare(
+                    Vehicle a,
+                    Vehicle b) {
+
+                return Double.compare(
+                        b.speed,
+                        a.speed);
+            }
+        });
+
+        System.out.println(
+                "\nSORTED BY SPEED");
+
+        displayVehicles(vehicles);
+    }
+
+    // Filter By Vehicle Type
+    static void filterByType(
+            ArrayList<Vehicle> vehicles,
+            String type) {
+
+        System.out.println(
+                "\nFILTERED VEHICLES");
+
+        for (Vehicle v : vehicles) {
+
+            if (v.vehicleType
+                    .equalsIgnoreCase(type)) {
+
+                System.out.println(
+                        v.vehicleNumber
+                        + " "
+                        + v.vehicleType);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        ArrayList<Vehicle> vehicles =
+                new ArrayList<>();
+
+        // Add Vehicle Records
+        vehicles.add(new Vehicle(
+                1,
+                "Rahul",
+                "Car",
+                "PB10AB1234",
+                "Delhi",
+                95,
+                true,
+                false,
+                true,
+                "10:00"));
+
+        vehicles.add(new Vehicle(
+                2,
+                "Aman",
+                "Bike",
+                "PB11XY5678",
+                "Chandigarh",
+                60,
+                false,
+                true,
+                false,
+                "11:00"));
+
+        vehicles.add(new Vehicle(
+                3,
+                "Karan",
+                "Truck",
+                "PB22MN9876",
+                "Delhi",
+                100,
+                true,
+                false,
+                false,
+                "12:00"));
+
+        // Display Records
+        displayVehicles(vehicles);
+
+        // Detect Violations
+        detectViolations(vehicles);
+
+        // Search Vehicle
+        System.out.println(
+                "\nEnter vehicle number to search:");
+
+        String number = sc.nextLine();
+
+        searchVehicle(vehicles, number);
+
+        // Filter Vehicles
+        System.out.println(
+                "\nEnter vehicle type to filter:");
+
+        String type = sc.nextLine();
+
+        filterByType(vehicles, type);
+
+        // Sort Vehicles
+        sortBySpeed(vehicles);
+
+        sc.close();
+    }
+}

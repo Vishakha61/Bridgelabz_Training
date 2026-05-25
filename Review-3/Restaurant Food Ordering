@@ -1,0 +1,147 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Scanner;
+
+class MenuItem {
+
+    int id;
+    String name;
+    double price;
+    int orderCount;
+
+    MenuItem(int id, String name, double price) {
+
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.orderCount = 0;
+    }
+}
+
+public class Main {
+
+    // Place Order Method
+    static void placeOrder(ArrayList<MenuItem> menu,
+                           ArrayList<MenuItem> order,
+                           String itemName) {
+
+        boolean found = false;
+
+        for (MenuItem item : menu) {
+
+            if (item.name.equalsIgnoreCase(itemName)) {
+
+                order.add(item);
+
+                item.orderCount++;
+
+                System.out.println(item.name
+                        + " added to order");
+
+                found = true;
+
+                break;
+            }
+        }
+
+        if (!found) {
+
+            System.out.println(itemName
+                    + " is not available");
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Menu List
+        ArrayList<MenuItem> menu =
+                new ArrayList<>();
+
+        // Add Menu Items
+        menu.add(new MenuItem(1,
+                "Burger", 120));
+
+        menu.add(new MenuItem(2,
+                "Pizza", 300));
+
+        menu.add(new MenuItem(3,
+                "Pasta", 250));
+
+        // Display Menu
+        System.out.println("MENU");
+
+        for (MenuItem item : menu) {
+
+            System.out.println(item.id + " "
+                    + item.name + " ₹"
+                    + item.price);
+        }
+
+        // Order List
+        ArrayList<MenuItem> order =
+                new ArrayList<>();
+
+        // Take Customer Input
+        System.out.println(
+                "\nEnter item name to order:");
+
+        String itemName = sc.nextLine();
+
+        // Place Order
+        placeOrder(menu, order, itemName);
+
+        // Generate Bill
+        double total = 0;
+
+        for (MenuItem item : order) {
+
+            total += item.price;
+        }
+
+        System.out.println("\nTotal Bill = ₹"
+                + total);
+
+        // Find Popular Dish
+        MenuItem popular = menu.get(0);
+
+        for (MenuItem item : menu) {
+
+            if (item.orderCount >
+                    popular.orderCount) {
+
+                popular = item;
+            }
+        }
+
+        System.out.println("Popular Dish = "
+                + popular.name);
+
+        // Sort By Price
+        Collections.sort(menu,
+                new Comparator<MenuItem>() {
+
+            @Override
+            public int compare(MenuItem a,
+                               MenuItem b) {
+
+                return Double.compare(
+                        a.price, b.price);
+            }
+        });
+
+        // Display Sorted Menu
+        System.out.println("\nSORTED MENU");
+
+        for (MenuItem item : menu) {
+
+            System.out.println(item.id + " "
+                    + item.name + " ₹"
+                    + item.price);
+        }
+
+        sc.close();
+    }
+}

@@ -1,0 +1,76 @@
+import java.util.*;
+
+
+public class BrowserHistory {
+    class hisNode{
+    int pageId;
+    String title;
+    String visTime;
+    hisNode prev;
+    hisNode next;
+    hisNode(int p,String tit,String v){
+        pageId=p;
+        title=tit;
+        visTime=v;
+    }
+}
+ hisNode curr;
+void visitNewPage(int pageId,String title,String visTime){
+   hisNode newNode=new hisNode(pageId,title,visTime);
+  
+    if(curr==null){
+        curr=newNode;
+        return;
+    }
+    
+    curr.next=newNode;
+    newNode.prev=curr;
+    curr=newNode;
+}
+
+void backward(){
+   
+    while(curr!=null && curr.prev!=null){
+        curr=curr.prev;
+        }
+        System.out.println("Backward:"+curr.pageId+", "+curr.title+","+curr.visTime);
+}
+void forward(){
+     
+    while(curr!=null && curr.next!=null){
+        curr=curr.next;
+    }
+    System.out.println("Forward:"+curr.pageId+", "+curr.title+", "+curr.visTime);
+}
+void delete(){
+    while(curr!=null && curr.next!=null){
+        curr.prev.next=curr.next;
+    }
+    curr.next.prev=curr.prev;
+}
+void clearHistory(){
+    curr=null;
+    System.out.println("History cleared");
+}
+void display(){
+        hisNode temp = curr;
+        while (temp.prev != null) {
+            temp = temp.prev;
+        }
+        while (temp != null) {
+    System.out.println(temp.pageId + " " + temp.title +" " +temp.visTime);
+            temp = temp.next;
+}
+}
+    public static void main(String[] args) {
+        BrowserHistory browse=new BrowserHistory();
+        browse.visitNewPage(1,"Google","10:00");
+        browse.visitNewPage(2,"Youtube","11:00");
+        browse.visitNewPage(3,"gmail","12:00");
+        browse.display();
+        browse.backward();
+        browse.forward();
+        browse.clearHistory();
+        //browse.display();
+    }
+}
