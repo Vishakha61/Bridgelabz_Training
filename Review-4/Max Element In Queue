@@ -1,0 +1,22 @@
+//1. Find Largest Element in Queue
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+        Queue<Integer> q=new LinkedList<>();
+        q.add(2);
+        q.add(1);
+        q.add(5);
+        q.add(20);
+        q.add(10);
+        q.add(6);
+        int max=Integer.MIN_VALUE;
+        for(int i=0;i<q.size();i++){
+            int num=q.poll();
+            if(num>max){
+                max=num;
+            }
+            q.add(num);
+        }
+        System.out.print(max);
+    }
+}
